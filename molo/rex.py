@@ -25,6 +25,11 @@ class Extractor:
         if not attr in self._results:return None
         return self._results[attr]
 
+    def toDict(self):
+        """
+        """
+        return self._results
+
     def run(self):
         """
         """
