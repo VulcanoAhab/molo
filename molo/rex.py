@@ -12,6 +12,11 @@ class Extractor:
         """
         cls._parsers[fieldName]=re.compile(r"{}".format(fieldPattern),
                                                                 flag)
+    @classmethod
+    def cleanParsers(cls):
+        """
+        """
+        cls._parsers={}
 
     def __init__(self, textIn):
         """
