@@ -30,7 +30,7 @@ class Extractor:
         """
         return self._results
 
-    def run(self):
+    def run(self, onlyFirst=True):
         """
         """
         for field,rexFunc in self._parsers.items():
@@ -38,4 +38,7 @@ class Extractor:
             if not len(valueContainer):
                 self._results[field]=None
                 continue
-            self._results[field]=valueContainer[0]
+            if onlyFirst:
+                self._results[field]=valueContainer[0]
+            else:
+                self._results[field]=valueContainer
