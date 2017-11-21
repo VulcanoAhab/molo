@@ -7,11 +7,15 @@ class Extractor:
     _parsers={}
 
     @classmethod
-    def setCut(cls, fieldName, fieldPattern, flag=0):
+    def setCut(cls, fieldName, fieldPattern, flag=0, groupName=None):
         """
         """
-        cls._parsers[fieldName]=re.compile(r"{}".format(fieldPattern),
-                                                                flag)
+        rex=re.compile(r"{}".format(fieldPattern),flag)
+        cls._parsers[fieldName]={
+            "rex":rex,
+            "groupName":groupName,
+        }
+        
     @classmethod
     def cleanParsers(cls):
         """
@@ -38,12 +42,23 @@ class Extractor:
     def run(self, onlyFirst=True):
         """
         """
-        for field,rexFunc in self._parsers.items():
-            valueContainer=rexFunc.findall(self._t)
-            if not len(valueContainer):
-                self._results[field]=None
-                continue
-            if onlyFirst:
-                self._results[field]=valueContainer[0]
+        for field,rexDict in self._parsers.items():
+            rexFunc=rexDict["rex"]
+            groupName=rexDict["groupName"]
+            #-- by Group Name
+            if groupName:
+                valueContainer=rexFunc.search(self._t)
+                if not valueContainer:
+                    self._results[field]=None
+                    continue
+                self._results[field]=valueContainer.group(groupName)
+            #-- by Index
             else:
-                self._results[field]=valueContainer
+                valueContainer=rexFunc.findall(self._t)
+                if not len(valueContainer):
+                    self._results[field]=None
+                    continue
+                if onlyFirst:
+                    self._results[field]=valueContainer[0]
+                else:
+                    self._results[field]=valueContainer
