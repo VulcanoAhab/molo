@@ -15,7 +15,7 @@ class Extractor:
             "rex":rex,
             "groupName":groupName,
         }
-        
+
     @classmethod
     def cleanParsers(cls):
         """
@@ -51,7 +51,7 @@ class Extractor:
                 if not valueContainer:
                     self._results[field]=None
                     continue
-                self._results[field]=valueContainer.group(groupName)
+                self._results[field]=valueContainer.group(groupName).strip()
             #-- by Index
             else:
                 valueContainer=rexFunc.findall(self._t)
@@ -59,6 +59,6 @@ class Extractor:
                     self._results[field]=None
                     continue
                 if onlyFirst:
-                    self._results[field]=valueContainer[0]
+                    self._results[field]=valueContainer[0].strip()
                 else:
-                    self._results[field]=valueContainer
+                    self._results[field]=[r.strip() for in valueContainer]
