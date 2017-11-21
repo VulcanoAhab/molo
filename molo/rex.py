@@ -61,4 +61,4 @@ class Extractor:
                 if onlyFirst:
                     self._results[field]=valueContainer[0].strip()
                 else:
-                    self._results[field]=[r.strip() for in valueContainer]
+                    self._results[field]=[r.strip() for r in valueContainer]
